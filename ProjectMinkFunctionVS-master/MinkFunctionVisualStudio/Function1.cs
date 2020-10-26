@@ -36,6 +36,8 @@ namespace MinkFunctionVisualStudio
             var mechanicalMotorTimer = "0";
             var timeSinceHydService = "0";
             var timeSinceMotService = "0";
+            //var GPS = "0";
+            //var vehicleID = "0";
             string storageConnectionString = $"DefaultEndpointsProtocol=https;AccountName=storageaccountthyrrbb40;AccountKey=QIYoOZF9hFOofKkNXves5ThvoxPmTuaobV0NNgioAB4dGCigabSEMQZTEcdkqsaRcH2Repv4K56gbT1jdVAF/Q==;EndpointSuffix=core.windows.net";
             string containerName = $"blob-container";
             string fileName = $"blobmessage.txt";
@@ -88,6 +90,12 @@ namespace MinkFunctionVisualStudio
             messageString.Contains("TimeSinceMotServ") ?
             timeSinceMotService = JObject.Parse(messageString)["TimeSinceMotServ"].ToString().Replace(',', '.') :
             timeSinceMotService = JObject.Parse(blobcontent)["TimeSinceMotServ"].ToString().Replace(',', '.'),
+            //messageString.Contains("GPS") ?
+            //GPS = JObject.Parse(messageString)["GPS"].ToString().Replace(',', '.') :
+            //GPS = JObject.Parse(blobcontent)["GPS"].ToString().Replace(',', '.'),
+            //messageString.Contains("vehicleID") ?
+            //vehicleID = JObject.Parse(messageString)["vehicleID"].ToString().Replace(',', '.') :
+            //vehicleID = JObject.Parse(blobcontent)["vehicleID"].ToString().Replace(',', '.'),
             messageString.Contains("nowTime") ?
             unconvTime = JObject.Parse(messageString)["nowTime"].ToString().Replace(',', '.') :
             unconvTime = JObject.Parse(blobcontent)["nowTime"].ToString().Replace(',', '.'));
@@ -104,6 +112,7 @@ namespace MinkFunctionVisualStudio
             if (alarms != "8")
             {
                 string blobMessageString = "{" + $"\"motorTemp\": {motTemp},\"hydraulicTemp\": {hydTemp},\"fuelLevel\": {fuelLevel},\"hydraulicPressure\": {hydPressure},\"alarms\": \"{alarms}\",\"RPM\": {RPM},\"motorRunTimerHour\": {motorRunTimerHour},\"mechanicalMotorTimer\": {mechanicalMotorTimer},\"TimeSinceHydServ\": {timeSinceHydService},\"TimeSinceMotServ\": {timeSinceMotService},\"nowTime\": \"{unconvTime}\"" + "}";
+                //string blobMessageString = "{" + $"\"motorTemp\": {motTemp},\"hydraulicTemp\": {hydTemp},\"fuelLevel\": {fuelLevel},\"hydraulicPressure\": {hydPressure},\"alarms\": \"{alarms}\",\"RPM\": {RPM},\"motorRunTimerHour\": {motorRunTimerHour},\"mechanicalMotorTimer\": {mechanicalMotorTimer},\"TimeSinceHydServ\": {timeSinceHydService},\"TimeSinceMotServ\": {timeSinceMotService},\"nowTime\": \"{unconvTime}\",\"GPS\": \"{GPS}\",\"vehicleID\": \"{vehicleID}\"" + "}";
                 log.LogInformation($"{blobMessageString}");
                 var blobUploadcontent = (blob.UploadTextAsync(blobMessageString));
 
@@ -114,8 +123,8 @@ namespace MinkFunctionVisualStudio
                 // Values from the variables are inserted into a SQL statement
                 var text = "INSERT INTO dbo.vehicleDatas (hydraulicTemperature, motorTemperature, nowTime, fuelLevel, hydraulicPressure, motorSpeed, motorRunTimerHour, mechanicalMotorTimer, timeSinceHydService, timeSinceMotService )" +
                $"VALUES ({hydTemp}, {motTemp}, '{convTime}', {fuelLevel}, {hydPressure}, {RPM}, {motorRunTimerHour}, {mechanicalMotorTimer}, {timeSinceHydService}, {timeSinceMotService})";
-                //var text = "INSERT INTO dbo.vehicleDatas (hydraulicTemperature, motorTemperature, nowTime, fuelLevel, feedLevel, hydraulicPressure, motorSpeed, timeSinceHydService, timeSinceMotService, mechanicalMotorTimer, motRunTimerMinutes)" +
-                //$"VALUES ({hydtemp}, {mottemp}, '{time}', {fuelLevel}, {feedLevel}, {hydPressure}, {motSpeed}, {timeSinceHydService}, {timeSinceMotService}, {mechanicalMotorTimer}, {motRunTimerHour}, motRunTimerMinutes)";
+                //var text = "INSERT INTO dbo.vehicleDatas (hydraulicTemperature, motorTemperature, nowTime, fuelLevel, hydraulicPressure, motorSpeed, motorRunTimerHour, mechanicalMotorTimer, timeSinceHydService, timeSinceMotService, GPS, vehicleID)" +
+                //$"VALUES ({hydTemp}, {motTemp}, '{convTime}', {fuelLevel}, {hydPressure}, {RPM}, {motorRunTimerHour}, {mechanicalMotorTimer}, {timeSinceHydService}, {timeSinceMotService}, {GPS}, {vehicleID})";
 
                 using SqlCommand cmd = new SqlCommand(text, conn);
                 // Execute the command and log the # rows affected.
