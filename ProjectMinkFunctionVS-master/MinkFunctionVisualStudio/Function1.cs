@@ -16,9 +16,9 @@ using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace MinkFunctionVisualStudio
 {
-    public static class Function1
+    public static class DataCollectorFunction
     {
-        [FunctionName("Function1")]
+        [FunctionName("DataCollectorFunction")]
         //Creating a connection to the IoThub trigger
         public static async Task Run([IoTHubTrigger("messages/events", Connection = "ConnectionString")] EventData message, ILogger log)
         {
@@ -38,7 +38,7 @@ namespace MinkFunctionVisualStudio
             var timeSinceMotService = "0";
             //var GPS = "0";
             //var vehicleID = "0";
-            string storageConnectionString = $"DefaultEndpointsProtocol=https;AccountName=storageaccountthyrrbb40;AccountKey=QIYoOZF9hFOofKkNXves5ThvoxPmTuaobV0NNgioAB4dGCigabSEMQZTEcdkqsaRcH2Repv4K56gbT1jdVAF/Q==;EndpointSuffix=core.windows.net";
+            string storageConnectionString = $"DefaultEndpointsProtocol=https;AccountName=storagethyrrestrup;AccountKey=V4zSBB2TSuWwqTf/eVudIj8XAJD59QRcFg/SIQ7UHp5gMw64T3UuAIAEKOfY1tnj82jjZ40sMUDJbEVCqqiRkw==;EndpointSuffix=core.windows.net";
             string containerName = $"blob-container";
             string fileName = $"blobmessage.txt";
 
